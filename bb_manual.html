@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Board Buddies TCG — Official Game Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0ece2;--paper:#faf8f2;--ink:#1a1728;--blue:#1e3a8a;--gold:#b45309;--red:#b91c1c;--green:#15803d;--purple:#5b21b6;--muted:#6b6580;--border:#d8d2c6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);background-image:linear-gradient(rgba(60,100,200,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(60,100,200,0.06) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font-family:'Nunito',sans-serif;line-height:1.65;}
+.pixel{font-family:'Press Start 2P',monospace;}
+/* NAV */
+.top-nav{background:#111;border-bottom:3px solid #f9d83a;position:sticky;top:0;z-index:90;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.top-nav a{font-family:'Press Start 2P',monospace;font-size:8px;padding:12px 14px;color:rgba(255,255,255,.55);text-decoration:none;white-space:nowrap;letter-spacing:.5px;border-right:1px solid #222;}
+.top-nav a:hover,.top-nav a.active{color:#f9d83a;}
+/* COVER */
+.cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px 60px;background:#111;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:24px 24px;}
+.cover-title{font-family:'Press Start 2P',monospace;font-size:clamp(20px,5vw,42px);color:#f9d83a;text-align:center;line-height:1.6;text-shadow:3px 3px 0 #b45309;}
+.cover-sub{font-family:'Press Start 2P',monospace;font-size:clamp(8px,1.8vw,13px);color:rgba(255,255,255,.5);margin-top:16px;text-align:center;letter-spacing:1px;}
+.cover-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:24px 0;}
+.badge{font-family:'Press Start 2P',monospace;font-size:7px;padding:6px 10px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.6);letter-spacing:.5px;}
+.cover-chars{display:flex;gap:24px;justify-content:center;margin:32px 0;flex-wrap:wrap;}
+.char-box{text-align:center;}
+.char-box canvas{image-rendering:pixelated;display:block;margin:0 auto 8px;}
+.char-name{font-family:'Press Start 2P',monospace;font-size:7px;color:rgba(255,255,255,.5);}
+.start-btn{font-family:'Press Start 2P',monospace;font-size:10px;padding:14px 28px;background:#f9d83a;color:#111;border:none;cursor:pointer;text-decoration:none;display:inline-block;letter-spacing:1px;margin-top:8px;}
+.start-btn:hover{background:#fbbf24;}
+/* CHAPTERS */
+.chapter{max-width:1040px;margin:0 auto;padding:48px 24px 36px;}
+.ch-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:14px;border-bottom:3px solid #111;}
+.ch-num{font-family:'Press Start 2P',monospace;font-size:28px;color:var(--border);flex-shrink:0;}
+.ch-title{font-family:'Press Start 2P',monospace;font-size:clamp(12px,3vw,20px);color:var(--blue);line-height:1.4;}
+h3{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--blue);margin:28px 0 12px;letter-spacing:.5px;}
+h4{font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:var(--ink);margin:16px 0 6px;}
+p{font-size:15px;margin-bottom:12px;}
+ul,ol{padding-left:22px;margin-bottom:12px;}
+li{font-size:15px;margin-bottom:6px;}
+strong{font-weight:800;}
+.tip{background:rgba(249,216,58,.12);border-left:4px solid #f9d83a;padding:12px 16px;margin:16px 0;font-size:14px;}
+.tip::before{content:'★ ';}
+.warn{background:rgba(185,28,28,.07);border-left:4px solid var(--red);padding:12px 16px;margin:16px 0;font-size:14px;}
+/* COMPONENT GRID */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:20px 0;}
+.comp-box{background:var(--paper);border:2px solid var(--border);padding:14px;text-align:center;}
+.comp-count{font-family:'Press Start 2P',monospace;font-size:22px;color:var(--blue);line-height:1.2;}
+.comp-name{font-weight:700;font-size:12px;margin-top:6px;}
+.comp-desc{font-size:10px;color:var(--muted);margin-top:4px;}
+/* PLAY AREA */
+.play-area{background:#1a1a2e;border-radius:4px;padding:20px;margin:20px 0;font-family:'Press Start 2P',monospace;}
+.pa-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+.pa-zone{border:2px dashed rgba(255,255,255,.25);padding:12px 10px;font-size:8px;text-align:center;color:rgba(255,255,255,.7);flex:1;min-width:80px;line-height:1.6;}
+.pa-zone.rival{border-color:rgba(230,80,80,.5);color:rgba(255,180,180,.8);background:rgba(230,80,80,.08);}
+.pa-zone.guard{border-color:rgba(100,100,100,.5);color:rgba(200,200,200,.7);background:rgba(50,50,50,.4);}
+.pa-zone.active{border-color:rgba(50,200,200,.4);color:rgba(150,240,240,.8);background:rgba(50,200,200,.08);}
+.pa-zone.util{border-color:rgba(200,200,100,.3);color:rgba(220,220,150,.7);background:rgba(200,200,50,.05);}
+.pa-label{font-size:7px;color:rgba(255,255,255,.3);margin-bottom:10px;letter-spacing:1px;}
+/* ACTION CARDS */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.action-box{background:var(--paper);border:3px solid var(--border);padding:16px;}
+.action-box .label{font-family:'Press Start 2P',monospace;font-size:9px;margin-bottom:8px;}
+.action-box p{font-size:13px;margin:0;}
+.action-draw{border-color:#16a34a;}.action-draw .label{color:#16a34a;}
+.action-attack{border-color:var(--red);}.action-attack .label{color:var(--red);}
+.action-guard{border-color:#d97706;}.action-guard .label{color:#d97706;}
+.action-break{border-color:var(--blue);}.action-break .label{color:var(--blue);}
+.action-charge{border-color:var(--purple);}.action-charge .label{color:var(--purple);}
+/* CARD DISPLAY */
+.card-gallery{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:24px 0;align-items:flex-start;}
+.tcg{width:172px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 5px 18px rgba(0,0,0,.22);flex-shrink:0;font-family:'Nunito',sans-serif;}
+.tcg-head{padding:7px 9px 6px;display:flex;justify-content:space-between;align-items:center;}
+.tcg-name{font-family:'Press Start 2P',monospace;font-size:7px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px rgba(0,0,0,.4);}
+.tcg-type{font-family:'Press Start 2P',monospace;font-size:6px;background:rgba(255,255,255,.18);color:rgba(255,255,255,.9);padding:2px 4px;}
+.tcg-art{height:92px;display:flex;align-items:center;justify-content:center;position:relative;margin:0 6px;border-radius:4px;background:#faf8f0;background-image:repeating-linear-gradient(transparent,transparent 12px,rgba(150,185,230,.15) 12px,rgba(150,185,230,.15) 13px);}
+.tcg-art canvas{image-rendering:pixelated;}
+.tcg-bust{position:absolute;top:5px;right:5px;font-family:'Press Start 2P',monospace;font-size:9px;background:#1e3a8a;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.tcg-charge-badge{position:absolute;top:5px;right:5px;font-family:'Press Start 2P',monospace;font-size:8px;background:rgba(0,0,0,.35);color:#f9d83a;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;line-height:1;}
+.tcg-charge-badge small{font-size:5px;color:rgba(249,216,58,.7);}
+.tcg-vit{display:flex;gap:4px;padding:4px 8px 2px;align-items:center;}
+.vdot{width:10px;height:10px;border-radius:50%;background:#16a34a;border:1.5px solid #15803d;}
+.vdot.empty{background:transparent;border-color:var(--border);}
+.tcg-stats{display:flex;gap:2px;padding:3px 7px 2px;flex-wrap:wrap;}
+.stat{background:rgba(0,0,0,.07);font-size:8px;padding:2px 4px;font-weight:700;}
+.tcg-body{flex:1;margin:0 6px 7px;padding:5px 6px;font-size:9px;line-height:1.45;background:#faf8f0;background-image:repeating-linear-gradient(transparent,transparent 12px,rgba(150,185,230,.15) 12px,rgba(150,185,230,.15) 13px);}
+.tcg-body b{font-size:9.5px;}
+.tcg-body .flav{font-style:italic;color:#999;font-size:8px;display:block;margin-top:3px;}
+.kw{display:inline-block;font-size:7px;padding:1px 4px;font-family:'Press Start 2P',monospace;}
+.kw-rush{background:#14532d;color:#bbf7d0;}
+.kw-delay{background:#3b0764;color:#e9d5ff;}
+.kw-stall{background:#1c1917;color:#e7e5e4;}
+.kw-haste{background:#451a03;color:#fed7aa;}
+.tcg-foot{padding:3px 7px 5px;display:flex;justify-content:space-between;background:rgba(240,236,226,.8);}
+.tcg-num{font-size:7px;color:#aaa;}
+.tcg-rar{font-size:11px;}
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:13px;}
+th{background:var(--paper);color:var(--blue);padding:7px 10px;text-align:left;border:1px solid var(--border);font-family:'Press Start 2P',monospace;font-size:9px;}
+td{padding:6px 10px;border:1px solid rgba(0,0,0,.07);}
+tr:nth-child(even) td{background:rgba(28,42,108,.04);}
+/* CARD LIST */
+.cl-section{margin:20px 0;}
+.cl-section h3{border-top:3px solid #111;padding-top:16px;}
+.card-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin:10px 0;}
+.cl-item{background:var(--paper);border:2px solid var(--border);padding:10px 12px;display:flex;gap:10px;align-items:flex-start;}
+.cl-num{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--muted);flex-shrink:0;padding-top:2px;min-width:36px;}
+.cl-body{flex:1;}
+.cl-name{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--ink);margin-bottom:4px;}
+.cl-stats{font-size:11px;color:var(--muted);}
+.cl-effect{font-size:12px;color:var(--ink);margin-top:3px;}
+.rar-star{color:#b45309;}
+.rar-uncommon{color:var(--muted);}
+.rar-common{color:#9ca3af;}
+.rar-ultra{color:#d97706;}
+.rar-secret{color:var(--purple);}
+/* BREAK */
+.break-chain{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:16px 0;}
+.break-step{background:var(--paper);border:2px solid var(--border);padding:12px;flex:1;min-width:120px;text-align:center;}
+.break-step .n{font-family:'Press Start 2P',monospace;font-size:16px;color:var(--red);margin-bottom:6px;}
+.break-step h4{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--red);margin:0 0 5px;}
+.break-step p{font-size:11px;color:var(--muted);margin:0;}
+.break-arrow{font-family:'Press Start 2P',monospace;font-size:18px;color:var(--border);}
+/* DIV */
+hr.div{border:none;border-top:3px solid #111;margin:48px 0;}
+/* BURST TABLE */
+.burst-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+.burst-box{background:var(--paper);border:2px solid var(--border);padding:10px 12px;text-align:center;flex:1;min-width:100px;}
+.burst-box .bn{font-family:'Press Start 2P',monospace;font-size:20px;color:var(--blue);}
+.burst-box .bl{font-size:10px;color:var(--muted);margin-top:4px;}
+.burst-box.special{border-color:var(--gold);}.burst-box.special .bn{color:var(--gold);}
+.end-banner{text-align:center;background:#111;padding:40px 24px;margin-top:48px;}
+.end-banner .title{font-family:'Press Start 2P',monospace;font-size:clamp(12px,3vw,22px);color:#f9d83a;margin-bottom:12px;}
+.end-banner p{font-size:14px;color:rgba(255,255,255,.5);}
+@media(max-width:600px){.action-grid{grid-template-columns:1fr;}.break-chain{flex-direction:column;}.break-arrow{transform:rotate(90deg);}}
+</style>
+</head>
+<body>
+<nav class="top-nav" id="nav">
+  <a href="#cover">Cover</a>
+  <a href="#ch1">In the Box</a>
+  <a href="#ch2">Play Area</a>
+  <a href="#ch3">Card Types</a>
+  <a href="#ch4">How to Play</a>
+  <a href="#ch5">Charges</a>
+  <a href="#ch6">BREAK</a>
+  <a href="#ch7">Keywords</a>
+  <a href="#ch8">Status Effects</a>
+  <a href="#ch9">Card List</a>
+  <a href="#ch10">Starters</a>
+</nav>
+
+<section class="cover" id="cover">
+  <div class="cover-title">BOARD<br>BUDDIES<br>TCG</div>
+  <div class="cover-sub">OFFICIAL GAME MANUAL · SET 1: SCHOOL DAY</div>
+  <div class="cover-badges">
+    <span class="badge">2–4 PLAYERS</span>
+    <span class="badge">DUEL OR CO-OP</span>
+    <span class="badge">73 CARDS</span>
+    <span class="badge">SET 1 OF 3</span>
+  </div>
+  <div class="cover-chars" id="cover-chars"></div>
+  <a href="#ch1" class="start-btn">START READING ▶</a>
+</section>
+
+<!-- CH1 -->
+<section class="chapter" id="ch1">
+  <div class="ch-header"><div class="ch-num">01</div><div class="ch-title">WHAT'S IN THE BOX</div></div>
+  <p>Board Buddies TCG is a card game for 2–4 players built around the Board Buddies universe. You field a party of three units — Buddies, Wilds, and Rivals — and fight to knock out all of your opponent's units. Alternatively, team up against a shared Rival boss in Co-Op mode.</p>
+  <p>Every mechanic runs on cards. There are no dice and no separate tracking boards. Charge tokens are tracked with a whiteboard marker on the circles provided on the Quick Start Card or mat.</p>
+  <div class="comp-grid">
+    <div class="comp-box"><div class="comp-count">4</div><div class="comp-name">Buddy Cards</div><div class="comp-desc">Fred, Flurb, Donny, Manny — Rare ★</div></div>
+    <div class="comp-box"><div class="comp-count">5</div><div class="comp-name">Rival Cards</div><div class="comp-desc">Boss units — played in your party or as shared boss — Ultra Rare ✦</div></div>
+    <div class="comp-box"><div class="comp-count">15</div><div class="comp-name">Wild Cards</div><div class="comp-desc">Enemy units you recruit as allies — Common to Rare</div></div>
+    <div class="comp-box"><div class="comp-count">16</div><div class="comp-name">Skill Cards</div><div class="comp-desc">Buddy-specific abilities — Uncommon ✒</div></div>
+    <div class="comp-box"><div class="comp-count">8</div><div class="comp-name">Sketch Cards</div><div class="comp-desc">Charge-powered Draw Power moves — Rare ★</div></div>
+    <div class="comp-box"><div class="comp-count">9</div><div class="comp-name">Item Cards</div><div class="comp-desc">Consumables any unit can use — Common to Rare</div></div>
+    <div class="comp-box"><div class="comp-count">6</div><div class="comp-name">Event Cards</div><div class="comp-desc">Rush, Delay, Stall, Haste effects — Uncommon to Rare</div></div>
+    <div class="comp-box"><div class="comp-count">6</div><div class="comp-name">Status Cards</div><div class="comp-desc">Applied directly onto affected units</div></div>
+    <div class="comp-box"><div class="comp-count">4</div><div class="comp-name">Secret Rare ◆</div><div class="comp-desc">Alt-art holographic Buddy Cards</div></div>
+    <div class="comp-box"><div class="comp-count">4</div><div class="comp-name">Quick Start Cards</div><div class="comp-desc">Mission brief, action summary, charge tracking circles</div></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);">Total: 73 unique cards · Set 1: School Day · Set icon: ✏</p>
+</section>
+
+<hr class="div">
+
+<!-- CH2 -->
+<section class="chapter" id="ch2">
+  <div class="ch-header"><div class="ch-num">02</div><div class="ch-title">THE PLAY AREA</div></div>
+  <p>Each player uses a personal Play Area (A3 mat). It is divided into three rows. From top to bottom:</p>
+  <div class="play-area">
+    <div class="pa-label">TOP ROW — CO-OP MODE ONLY</div>
+    <div class="pa-row">
+      <div class="pa-zone rival">RIVAL<br>(CO-OP ONLY)</div>
+      <div class="pa-zone rival">RIVAL<br>(CO-OP ONLY)</div>
+      <div class="pa-zone rival">RIVAL<br>(CO-OP ONLY)</div>
+    </div>
+    <div class="pa-label" style="margin-top:12px;">MIDDLE ROW — GUARD POSITIONS</div>
+    <div class="pa-row">
+      <div class="pa-zone guard">BUDDY OR WILD<br><span style="font-size:6px;">GUARD POSITION ONLY</span></div>
+      <div class="pa-zone guard">BUDDY OR WILD<br><span style="font-size:6px;">GUARD POSITION ONLY</span></div>
+      <div class="pa-zone guard">BUDDY, RIVAL OR WILD<br><span style="font-size:6px;">GUARD POSITION ONLY</span></div>
+    </div>
+    <div class="pa-label" style="margin-top:12px;">BOTTOM ROW — ACTIVE UNITS + DECK + DISCARD</div>
+    <div class="pa-row">
+      <div class="pa-zone util">SUPPORT<br>DECK</div>
+      <div class="pa-zone active">BUDDY OR<br>WILD</div>
+      <div class="pa-zone active">BUDDY OR<br>WILD</div>
+      <div class="pa-zone active">BUDDY,<br>RIVAL OR WILD</div>
+      <div class="pa-zone util">DISCARD<br>PILE</div>
+    </div>
+  </div>
+  <h3>HOW THE ROWS WORK</h3>
+  <table>
+    <tr><th>Row</th><th>Purpose</th><th>Notes</th></tr>
+    <tr><td><strong>Top (red)</strong></td><td>Rival Boss slots</td><td>Co-op mode only. Place shared Rival boss cards here — not in the active row.</td></tr>
+    <tr><td><strong>Middle (grey)</strong></td><td>Guard positions</td><td>When a unit Guards, move their card from the bottom row to the matching Guard slot here and turn it sideways.</td></tr>
+    <tr><td><strong>Bottom (teal)</strong></td><td>Active units + utilities</td><td>Your three active unit slots sit between the Support Deck (left) and Discard Pile (right).</td></tr>
+  </table>
+  <div class="tip">In Duel mode (2-player PvP) the top Rival row stays empty. It is only used when playing Co-Op against a shared boss.</div>
+  <h3>CHARGE TRACKING</h3>
+  <p>Each unit can hold up to 3 Charges. Use a whiteboard marker to fill in the charge circles on your Quick Start Card or mat as you earn charges. Wipe them away when you spend them on a Sketch Card.</p>
+</section>
+
+<hr class="div">
+
+<!-- CH3 -->
+<section class="chapter" id="ch3">
+  <div class="ch-header"><div class="ch-num">03</div><div class="ch-title">CARD TYPES</div></div>
+  <div class="card-gallery" id="card-gallery"></div>
+  <h3>UNIT CARDS</h3>
+  <table>
+    <tr><th>Type</th><th>Vitality</th><th>Skills / Sketches</th><th>BREAK?</th><th>Special</th></tr>
+    <tr><td><strong>Buddy</strong></td><td>3 hearts</td><td>Own Buddy's cards only</td><td>Yes ★</td><td>BREAK ability on card reverse</td></tr>
+    <tr><td><strong>Wild</strong></td><td>2 hearts (Sausage Roll Goblin: 3)</td><td>Item Cards only</td><td>No → Wild Power Surge</td><td>Built-in passive ability</td></tr>
+    <tr><td><strong>Rival</strong></td><td>3 hearts</td><td>Item Cards only</td><td>No → Rival Power Surge</td><td>Phase flip instead of KO</td></tr>
+  </table>
+  <p>When a Wild or Rival's DRAW reveals a Burst total of 4, they trigger their Power Surge ability instead of a BREAK: <strong>Wild Power Surge</strong> = 2.5× ATK to one foe; <strong>Rival Power Surge</strong> = 3× ATK to one foe.</p>
+  <h3>SUPPORT CARDS</h3>
+  <p><strong>Skill Cards</strong> — cost MP from the matching Buddy's pool. Only playable by the named Buddy. Each has a Burst Number used for BREAK checks.</p>
+  <p><strong>Sketch Cards</strong> — cost Charges (1 or 2). The closest Sketch to the top of your deck when you have 3 Charges is the one you can play. After using a Sketch, reshuffle your support deck.</p>
+  <p><strong>Item Cards</strong> — no cost. Any unit can use them. Each has a Burst Number.</p>
+  <p><strong>Event Cards</strong> — carry keywords (Rush, Delay, Stall, Haste). Played from the support deck, take effect immediately.</p>
+  <h3>STATUS CARDS</h3>
+  <p>Status Cards are placed directly on top of the affected unit when triggered. They show the effect, duration, and cure. Discard when expired. Multiple statuses stack on the same unit's corner.</p>
+</section>
+
+<hr class="div">
+
+<!-- CH4 -->
+<section class="chapter" id="ch4">
+  <div class="ch-header"><div class="ch-num">04</div><div class="ch-title">HOW TO PLAY</div></div>
+  <h3>MISSION OBJECTIVE</h3>
+  <p>You start with <strong>3 friendly units</strong> — a mix of Buddies, Wilds, and Rivals. Use your Support Deck to modify stats, trigger BREAKs, use Sketches, and apply effects. <strong>First player to knock out all of the opponent's units wins.</strong></p>
+  <p><strong>Co-Op challenge:</strong> Set up 3 Rival units in the top Rival zone. You and 1–3 friends attack and defend together — take them all down to win.</p>
+  <h3>ACTIONS PER BUDDY (WILD OR RIVAL) PER TURN</h3>
+  <p>Each of your three units takes one action per turn. Players alternate full turns (all three units act). Choose one action per unit:</p>
+  <div class="action-grid">
+    <div class="action-box action-draw">
+      <div class="label">DRAW</div>
+      <p>Reveal the top card of your Support Deck. If the Burst total adds to 4, go to BREAK (step 4). If not, check the card and play its effect if you can.</p>
+    </div>
+    <div class="action-box action-attack">
+      <div class="label">ATTACK</div>
+      <p>Attack using your base ATK value, or add a Support Card boost. If you choose <em>not</em> to attack this turn, earn +1 Charge instead.</p>
+    </div>
+    <div class="action-box action-guard">
+      <div class="label">GUARD</div>
+      <p>Turn your unit card sideways and move it to the Guard Position slot (middle row). Incoming damage is reduced by this unit's DEF value.</p>
+    </div>
+    <div class="action-box action-break">
+      <div class="label">BREAK</div>
+      <p>If the Burst total = 4 on a DRAW, your BREAK fires. If not, no BREAK occurs. Wilds and Rivals trigger their Power Surge instead.</p>
+    </div>
+    <div class="action-box action-charge">
+      <div class="label">CHARGE</div>
+      <p>If you have 3 Charges, you may play the Sketch Card closest to the top of your Support Deck. After using it, reshuffle your Support Deck.</p>
+    </div>
+  </div>
+  <h3>DAMAGE FORMULA</h3>
+  <table>
+    <tr><th>Attack type</th><th>Formula</th></tr>
+    <tr><td>Basic Attack</td><td>max(2, ATK × 1.5 − opponent DEF)</td></tr>
+    <tr><td>Physical Skill</td><td>max(2, ATK × printed power − opponent DEF)</td></tr>
+    <tr><td>Magic / Skill (water, fire, ink, etc.)</td><td>max(2, MAG × printed power − opponent DEF × 0.5)</td></tr>
+    <tr><td>Guard active</td><td>Incoming damage − defending unit's DEF</td></tr>
+    <tr><td>Weakness hit</td><td>× 1.5 after formula</td></tr>
+    <tr><td>Donny: Burst total = 4</td><td>Critical hit — 1.6× ATK (no BREAK, Donny has none in Set 1)</td></tr>
+  </table>
+  <h3>VITALITY (HP)</h3>
+  <p>Each unit's HP is divided into sections by Vitality Hearts shown on their card. When cumulative damage crosses a threshold, flip or discard the front Vitality section. A unit with no Vitality Hearts remaining is KO'd.</p>
+  <p>Revive a KO'd Buddy using a <strong>Sticky Tape</strong> Item Card (restores 1 Vitality Heart). Or use <strong>Blob Bubble</strong> for a complete party HP restoration.</p>
+  <h3>SUPPORT DECK</h3>
+  <p>Your Support Deck holds your Skill, Sketch, Item, and Event Cards. When the deck runs out, the Discard Pile becomes the new Support Deck. All cards in the Support Deck have a <strong>Burst Number</strong> (shown in a badge on the card) used during DRAW actions.</p>
+  <h3>DUEL MODE (2 players)</h3>
+  <p>Both players set up their Play Areas with 3 active units in the bottom row. Flip a coin — winner takes the first turn. Players alternate turns. First to KO all three opponent units wins.</p>
+  <h3>CO-OP MODE (2–4 players)</h3>
+  <p>Place up to 3 Rival Boss cards in the top Rival row of one shared Play Area. Players take turns together attacking the Rivals. Rival cards act at the end of each player's turn, using their printed stats. Defeat all Rivals to win together.</p>
+</section>
+
+<hr class="div">
+
+<!-- CH5 -->
+<section class="chapter" id="ch5">
+  <div class="ch-header"><div class="ch-num">05</div><div class="ch-title">THE CHARGE SYSTEM</div></div>
+  <p>Charges fuel Sketch Cards — the most powerful moves in the game. Track charges using the whiteboard marker circles on your Quick Start Card or mat. Each unit can hold a maximum of 3 Charges.</p>
+  <h3>EARNING CHARGES</h3>
+  <table>
+    <tr><th>Situation</th><th>Charges earned</th></tr>
+    <tr><td>DRAW action occurs AND you play the drawn card</td><td>+1 Charge</td></tr>
+    <tr><td>ATTACK is used AND modified with a Support Card</td><td>+1 Charge</td></tr>
+    <tr><td>You choose NOT to attack this turn</td><td>+1 Charge</td></tr>
+    <tr><td>You take a hit from a modified (boosted) attack</td><td>+1 Charge</td></tr>
+  </table>
+  <h3>USING CHARGES — SKETCH CARDS</h3>
+  <p>When a unit has 3 Charges, find the Sketch Card <em>closest to the top</em> of your Support Deck that belongs to that unit. Play it for its EFFECT, then <strong>reshuffle your entire Support Deck</strong>. Wipe all 3 charge circles for that unit.</p>
+  <div class="tip">If you DRAW a Sketch Card during a DRAW action but don't have 3 Charges, you simply keep your charges — the Sketch Card is discarded without being used, and no charges are spent.</div>
+  <h3>SKETCH CARDS — CHARGE COST AND EFFECT</h3>
+  <table>
+    <tr><th>#</th><th>Name</th><th>Buddy</th><th>Charge</th><th>Burst</th><th>Effect</th></tr>
+    <tr><td>041</td><td>Sketch Sword</td><td>Fred</td><td>1</td><td>#3</td><td>2.3× ATK to one foe</td></tr>
+    <tr><td>042</td><td>Doodle Anvil</td><td>Fred</td><td>2</td><td>#3</td><td>3.6× ATK to one foe — bypasses Guard</td></tr>
+    <tr><td>043</td><td>Draw The Sun</td><td>Flurb</td><td>1</td><td>#1</td><td>Heal all buddies 38% max HP + cure all ailments</td></tr>
+    <tr><td>044</td><td>Scribble Storm</td><td>Flurb</td><td>2</td><td>#3</td><td>2.8× MAG ink damage to all foes</td></tr>
+    <tr><td>045</td><td>Sketchbook Launch</td><td>Donny</td><td>1</td><td>#2</td><td>1.6× ATK to one foe</td></tr>
+    <tr><td>046</td><td>Stick Figure Army</td><td>Donny</td><td>2</td><td>#2</td><td>4 hits × 1.1× ATK on two random foes</td></tr>
+    <tr><td>047</td><td>Chalk Wall</td><td>Manny</td><td>1</td><td>#1</td><td>Party DEF up 50% for 2 turns</td></tr>
+    <tr><td>048</td><td>Big Arrow</td><td>Manny</td><td>2</td><td>#1</td><td>3× ATK on one foe — their ATK down 25% for 3 turns</td></tr>
+  </table>
+</section>
+
+<hr class="div">
+
+<!-- CH6 -->
+<section class="chapter" id="ch6">
+  <div class="ch-header"><div class="ch-num">06</div><div class="ch-title">THE BREAK SYSTEM</div></div>
+  <p>BREAK Abilities are the most powerful moves in the game. They fire automatically during a DRAW action when the <strong>Buddy's Burst + the drawn card's Burst = 4.</strong></p>
+  <p>Each Buddy Card shows their Buddy Burst number on the featured skill panel. When a Buddy DRAWs a card and the two numbers add to exactly 4, BREAK fires instead of the card's normal effect.</p>
+  <div class="break-chain">
+    <div class="break-step"><div class="n">1</div><h4>DRAW</h4><p>Reveal the top Support Card. Read its Burst Number (#1 to #4).</p></div>
+    <div class="break-arrow">→</div>
+    <div class="break-step"><div class="n">2</div><h4>CHECK</h4><p>Add Buddy Burst + Card Burst. Does it equal exactly 4?</p></div>
+    <div class="break-arrow">→</div>
+    <div class="break-step"><div class="n">3</div><h4>BREAK!</h4><p>Yes: BREAK fires — flip Buddy Card, resolve BREAK Ability. No: play the card's normal effect instead.</p></div>
+  </div>
+  <h3>BUDDY BREAK TABLE</h3>
+  <table>
+    <tr><th>Buddy</th><th>Buddy Burst</th><th>Needs Card Burst</th><th>BREAK Ability</th></tr>
+    <tr><td>Fred</td><td>#2</td><td>#2 (Julbock Bash, Rally Cry, Puddle Splash…)</td><td>Julbock Rampage — 4.2× ATK</td></tr>
+    <tr><td>Flurb</td><td>#1</td><td>#3 (Yule Blaze, Deep Pressure, Speed Quack…)</td><td>Tidal Sigh — 2.6× MAG water all + 25% HP to party</td></tr>
+    <tr><td>Donny</td><td>#2</td><td>#2 — No BREAK. Gets Critical Hit (1.6× ATK) instead</td><td>— (Critical Hit)</td></tr>
+    <tr><td>Manny</td><td>#3</td><td>#1 (Snake Strike, Burrow, Gnome Guard, Mongoose Frenzy, Slime Soothe, Blob Bubble, Chalk Wall, Big Arrow, Glue Stick, Red Frog, Eraser, most heal/utility cards…)</td><td>Cobra Cascade — 5.2× ATK</td></tr>
+  </table>
+  <div class="tip">Manny is the Break King — he triggers BREAK from almost any utility or healing card in the deck. The skill is knowing when to DRAW vs ATTACK with Manny on the field.</div>
+  <h3>FOCUS STATUS CARD</h3>
+  <p>The <strong>Focus</strong> Status Card bypasses the Burst check entirely: the next DRAW action by this unit automatically triggers BREAK regardless of the actual Burst total.</p>
+  <h3>DONNY'S CRITICAL HIT</h3>
+  <p>Donny has no BREAK ability in Set 1. When his DRAW reveals a Burst total of 4 (Donny Burst #2 + Card Burst #2), he triggers a <strong>Critical Hit</strong> instead: 1.6× ATK to the target. Donny's Quack Attack Skill Card also notes this explicitly.</p>
+  <h3>WILD AND RIVAL POWER SURGE</h3>
+  <p>When a Wild or Rival unit's DRAW results in Burst total = 4, they fire their Power Surge instead of a BREAK:</p>
+  <ul>
+    <li><strong>Wild Power Surge</strong> — 2.5× ATK to one foe</li>
+    <li><strong>Rival Power Surge</strong> — 3× ATK to one foe</li>
+  </ul>
+</section>
+
+<hr class="div">
+
+<!-- CH7 -->
+<section class="chapter" id="ch7">
+  <div class="ch-header"><div class="ch-num">07</div><div class="ch-title">KEYWORDS</div></div>
+  <p>Keywords appear on Event Cards and some Skill Cards. They modify turn order and momentum.</p>
+  <table>
+    <tr><th>Keyword</th><th>Effect</th><th>Best use</th></tr>
+    <tr><td><strong>RUSH</strong></td><td>Your next two attacks resolve before opponent's next turn</td><td>Duel: decisive before opponent can respond. Co-op: finish off a Rival before others get the kill.</td></tr>
+    <tr><td><strong>DELAY</strong></td><td>Opponent cannot play Skill Cards on their next turn</td><td>Disrupts setup turns and healing combos.</td></tr>
+    <tr><td><strong>STALL</strong></td><td>Opponent skips their Draw phase next turn</td><td>Starves their hand and prevents BREAK attempts.</td></tr>
+    <tr><td><strong>HASTE</strong></td><td>Chosen unit earns +3 Charges immediately (Clue Gus' Deal)</td><td>Instantly enables a 2-Charge Sketch without waiting.</td></tr>
+  </table>
+  <h3>EVENT CARDS</h3>
+  <table>
+    <tr><th>#</th><th>Name</th><th>Burst</th><th>Keyword</th><th>Effect</th></tr>
+    <tr><td>064</td><td>Bell's Cone</td><td>#2</td><td>STALL</td><td>Opponent skips their Draw phase next turn</td></tr>
+    <tr><td>065</td><td>Late Pass</td><td>#2</td><td>RUSH</td><td>Your next two attacks resolve before opponent's next turn</td></tr>
+    <tr><td>066</td><td>Pop Quiz</td><td>#1</td><td>DELAY</td><td>Opponent cannot play Skill Cards next turn</td></tr>
+    <tr><td>067</td><td>Pencil Pete's Advice</td><td>#1</td><td>—</td><td>Look at top 3 cards of your deck; rearrange in any order</td></tr>
+    <tr><td>068</td><td>Clue Gus' Deal</td><td>#2</td><td>HASTE</td><td>Discard immediately; chosen buddy earns +3 charges</td></tr>
+    <tr><td>069</td><td>Stickie's Secret</td><td>#3</td><td>—</td><td>Reveal top card; if Burst ≥ 3, draw 2 cards instead of 1</td></tr>
+  </table>
+</section>
+
+<hr class="div">
+
+<!-- CH8 -->
+<section class="chapter" id="ch8">
+  <div class="ch-header"><div class="ch-num">08</div><div class="ch-title">STATUS EFFECTS</div></div>
+  <p>Status Cards are placed directly on top of the affected unit card when triggered. They stay there until expired or cured. Multiple statuses can stack.</p>
+  <table>
+    <tr><th>#</th><th>Status</th><th>Effect</th><th>Duration</th><th>Cured by</th></tr>
+    <tr><td>058</td><td><strong>ATK UP</strong></td><td>1.3× physical damage dealt</td><td>3 turns</td><td>Eraser</td></tr>
+    <tr><td>059</td><td><strong>ATK DOWN</strong></td><td>0.7× physical damage dealt</td><td>3 turns</td><td>Eraser</td></tr>
+    <tr><td>060</td><td><strong>DEF DOWN</strong></td><td>1.3× incoming physical attack</td><td>3 turns</td><td>Eraser</td></tr>
+    <tr><td>061</td><td><strong>SLOW</strong></td><td>Cannot play Sketch Cards on next turn</td><td>2 turns</td><td>Eraser</td></tr>
+    <tr><td>062</td><td><strong>POISON</strong></td><td>Remove 10% of max HP at the start of each turn</td><td>Until cured</td><td>Eraser, Draw The Sun</td></tr>
+    <tr><td>063</td><td><strong>FOCUS</strong></td><td>Next DRAW by this unit automatically triggers BREAK regardless of Burst total</td><td>1 action</td><td>Expires on use</td></tr>
+  </table>
+  <div class="warn">Note: Rally Cry (Manny Skill) gives ATK Up 50% (1.5× ATK) — stronger than the ATK UP Status Card (1.3×). Sad Face (Flurb Skill) gives ATK Down 50% (0.5× ATK) — stronger than the ATK DOWN Status Card (0.7×). Skill effects and Status Cards are separate mechanics.</div>
+</section>
+
+<hr class="div">
+
+<!-- CH9: CARD LIST -->
+<section class="chapter" id="ch9">
+  <div class="ch-header"><div class="ch-num">09</div><div class="ch-title">COMPLETE CARD LIST</div></div>
+  <p>All 73 unique cards in Set 1: School Day. Rarity: ✏ Common · ✒ Uncommon · ★ Rare · ✦ Ultra Rare · ◆ Secret Rare</p>
+
+  <div class="cl-section">
+    <h3>BUDDY CARDS — RARE ★</h3>
+    <div class="card-list" id="buddy-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>RIVAL CARDS — ULTRA RARE ✦</h3>
+    <div class="card-list" id="rival-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>WILD CARDS — COMMON ✏ TO RARE ★</h3>
+    <div class="card-list" id="wild-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>SKILL CARDS — UNCOMMON ✒</h3>
+    <div class="card-list" id="skill-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>SKETCH CARDS — RARE ★</h3>
+    <div class="card-list" id="sketch-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>ITEM CARDS — COMMON ✏ TO RARE ★</h3>
+    <div class="card-list" id="item-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>EVENT CARDS — UNCOMMON ✒ TO RARE ★</h3>
+    <div class="card-list" id="event-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>STATUS CARDS — NOT IN BOOSTERS</h3>
+    <div class="card-list" id="status-list"></div>
+  </div>
+
+  <div class="cl-section">
+    <h3>SECRET RARE ALT-ART ◆</h3>
+    <div class="card-list" id="secret-list"></div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- CH10 -->
+<section class="chapter" id="ch10">
+  <div class="ch-header"><div class="ch-num">10</div><div class="ch-title">STARTER PACKS &amp; PRODUCTS</div></div>
+  <h3>STARTER PACK A — "CLASSROOM HEROES"</h3>
+  <p>Party: <strong>Fred + Flurb + Manny.</strong> The game's full range in one box — attacker, healer, BREAK specialist. Manny BREAKs constantly on Burst 1 cards, Fred BREAKs on Burst 2, Flurb's BREAK (Tidal Sigh) is a rare spectacular moment. Recommended as the first purchase.</p>
+  <h3>STARTER PACK B — "SPEED SQUAD"</h3>
+  <p>Party: <strong>Fred + Flurb + Donny.</strong> Faster, more aggressive deck. Donny triggers Critical Hits over half the time and the deck includes two Late Pass (RUSH) Event Cards. Fred becomes the primary BREAK unit.</p>
+  <h3>2-PLAYER STARTER BOX</h3>
+  <p>Includes Pack A + Pack B together — designed to play against each other directly. Also includes one Rival Card (The Odd Sock) for an intro Co-Op session. No additional purchases needed to play a complete game.</p>
+  <h3>BOOSTER PACKS (10 cards)</h3>
+  <p>Slots 1–6: Common and Uncommon cards. Slots 7–8: Uncommon. Slot 9: Guaranteed Rare. Slot 10: Chance of Ultra Rare (✦) or Secret Rare (◆). Wild Cards and Event Cards are only in Booster Packs — not in Starter Packs.</p>
+  <div class="end-banner">
+    <div class="title">GOOD LUCK, BUDDY.</div>
+    <p>Set 2: Digital World introduces Bindi, Rex, and Pip — and everything gets wilder.</p>
+  </div>
+</section>
+
+<script>
+// PIXEL ART DATA
+const PAL={K:'#101018',W:'#ffffff',R:'#d12a2a',r:'#ff7b6b',O:'#f28c28',Y:'#f9d83a',G:'#2f9e44',g:'#8be36a',B:'#2f56c9',b:'#7fb0f5',P:'#8a3bc4',p:'#f4a7d9',N:'#8b5a2b',n:'#d4a06a',S:'#f6cfa8',D:'#3d3d48',d:'#7c7c8a',l:'#c8c8d2',T:'#25a5a5',w:'#f8f0dc',M:'#e0489c',k:'#202030',E:'#5c4b3a',e:'#a58a63',V:'#6b8f3a',v:'#b4d75a',C:'#c0c8f0',c:'#e4e8ff',i:'#3b6bd6',Q:'#ffe8a0',q:'#c9a04a',u:'#4b2c6b',I:'#9d4edd'};
+const SPR={
+fred:["........RR......",".......RRRR.....","......RRRRRR....","...RRRRRRRRRR...","....RRRRRRRRRR..","...RRRRRRRRRRRR.","...WWWWWWWWWWWW.","....SSSSSSSSSS..","....SSSSSKSSSr..","....WWWWWWWWWWW.","...WWWWWWWWWWWW.","...WWWWWWWWWW...","....BBBBBBBB....","....YYYYYYYY....","....BBBB.BBBB...","....KKKK.KKKK..."],
+flurb:["................","................",".....pppppp.....","....pppppppp....","...pppppppppp...","..pppppppppppp..","..ppKpppppppp...","..pppppppppppM..","..pppppppppppMM.","..ppppppppppppM.","..pppppppppppp..","...pppKKKKppp...","...pppppppppp...","....pppppppp....","p.....pppp......","pp....pp.p......"],
+manny:["................",".....NN.NN......","....NNNNNNN.....","....NNKNNNNN....","....NNNNNNNNK...",".....NNNNNN.....","......nnnn......",".....nnnnnn.....","....NnnnnnnN....","....NnnnnnnN....","....NnnnnnnN.....",".....nnnnnn.N...",".....NNNNNN.NN...",".....NNNNNN..NN.",".....NN..NN...N.","....NNN..NNN...."],
+donny:["......YYYYYYY...","....YYYYYYYYY...","....YYYYYYYYYYY.","..YYKYYYYYYYKYX.","..YYYYYYYYYYYYX.","..YYYYYYYYYYYYX.","..YYYKKKKKYYYYX.","..YYYYYYYYYYYYX.","...YYYYYYYYYYY..","....BBB.BBB.....","......X.X.......","......X.X.......","......X.X.......","......X.X.......","......X.X.......","................"],
+sock:["......llllll....",".....llllllll...",".....lWKllWKl...",".....llllllll...",".....lllKKlll...",".....llKllKll...",".....RRRRRRRR...",".....llllllll...",".....llllllll...",".....RRRRRRRR...",".....llllllll....","....llllllll....","..llllllllll....",".lllllllllll....",".llllllllll.....","..RRRRRRRR......"],
+magpie:["................",".....KKKK.......",".......KKKKKK.O.","....KKRKKKOO....","....KKKKKKKO....","....KKKKKK......","...KKKKKKKW.....","..KKKKKKKWWW....",".KKKKKKKKWWWW...",".KKKKKKKKKWWW...","..KKKKKKKKKK....","...KKKKKKKK.....","....KKKKKK......","......OO.O......",".....OO..O......","................"],
+handball:[".....Y.Y.Y......",".....YYYYY......",".....YYYYY......","....BBBBBBBB....","...BBBBBBBBBB...","..BBBWBBBBBWBB..",".BBBBKBBBBBKBBB.",".BBBBBBBBBBBBBB.",".BBBBBBBBBBBBBB.",".BBBBBKKKKKBBBB.",".BBBBKBBBBBKBBB.",".BBBBBBBBBBBBBB.","..BBBBBBBBBBBB..","...BBBBBBBBBB...","....BBBBBBBB....","................"],
+croc:["KKKKKKKKKKKK....","KKKKKKKKKKKKKK..","KKRKKKKKKKKKKKK.","KKKKKKKKKKKKKKKK","KWWWWWWWWWWWWWWK","KKKKKKKKKKKKKKKK",".KKKKKKKKKKKKKK.","..llllllllllll..","..llllllllllll..","..lllllllllll...","...KK......KK...","................","................","................","................","................"]
+};
+function spr(rows,scale){const c=document.createElement('canvas');c.width=rows[0].length*scale;c.height=rows.length*scale;const g=c.getContext('2d');rows.forEach((row,j)=>{for(let i=0;i<row.length;i++){const ch=row[i];if(ch==='.'||ch===' ')return;g.fillStyle=PAL[ch]||'#f0f';g.fillRect(i*scale,j*scale,scale,scale);}});return c;}
+
+function mkTCG(o){
+  const d=document.createElement('div');d.className='tcg';
+  if(o.tilt)d.style.transform=`rotate(${o.tilt}deg)`;
+  d.innerHTML=`<div class="tcg-head" style="background:${o.hdr}"><span class="tcg-name">${o.name}</span><span class="tcg-type">${o.type}</span></div>`;
+  const art=document.createElement('div');art.className='tcg-art';art.style.background=o.artBg||'#faf8f0';
+  if(o.bust!=null){const b=document.createElement('div');b.className='tcg-bust';b.textContent=o.bust;art.appendChild(b);}
+  if(o.charge!=null){const cb=document.createElement('div');cb.className='tcg-charge-badge';cb.innerHTML=`${o.charge}<small>C</small>`;art.appendChild(cb);}
+  if(o.sk&&SPR[o.sk])art.appendChild(spr(SPR[o.sk],o.sc||4));
+  else if(o.icon){const ic=document.createElement('div');ic.style.cssText=`font-size:${o.iconSize||34}px;opacity:.5;`;ic.textContent=o.icon;art.appendChild(ic);}
+  d.appendChild(art);
+  if(o.vit!=null){const vr=document.createElement('div');vr.className='tcg-vit';for(let i=0;i<3;i++){const v=document.createElement('div');v.className=`vdot${i>=o.vit?' empty':''}`;vr.appendChild(v);}d.appendChild(vr);}
+  if(o.stats){const sr=document.createElement('div');sr.className='tcg-stats';o.stats.forEach(s=>sr.innerHTML+=`<span class="stat">${s}</span>`);d.appendChild(sr);}
+  const tb=document.createElement('div');tb.className='tcg-body';tb.innerHTML=o.body;d.appendChild(tb);
+  d.innerHTML+=`<div class="tcg-foot"><span class="tcg-num">${o.num}</span><span class="tcg-rar">${o.rar}</span></div>`;
+  return d;
+}
+
+// COVER CHARACTERS
+const cv=document.getElementById('cover-chars');
+[{sk:'fred',n:'FRED',sc:3},{sk:'flurb',n:'FLURB',sc:3},{sk:'donny',n:'DONNY',sc:3},{sk:'manny',n:'MANNY',sc:3}].forEach(c=>{
+  const box=document.createElement('div');box.className='char-box';
+  if(SPR[c.sk])box.appendChild(spr(SPR[c.sk],c.sc));
+  box.innerHTML+=`<div class="char-name">${c.n}</div>`;
+  cv.appendChild(box);
+});
+
+// CARD GALLERY (Ch3)
+const cg=document.getElementById('card-gallery');
+cg.appendChild(mkTCG({name:'Fred',type:'BUDDY',hdr:'#1e3a8a',artBg:'#dbeafe',sk:'fred',tilt:-5,bust:'2',vit:3,stats:['ATK 11','DEF 9','MAG 5','MP 14'],body:'<b>Julbock Bash</b> 5MP<br>Deal 1.7× ATK to one foe<br><br><b style="color:#b91c1c">BREAK:</b> Julbock Rampage 4.2× ATK<span class="flav">"Ho ho ho."</span>',num:'001/073',rar:'<span class="rar-star">★</span>'}));
+cg.appendChild(mkTCG({name:'Stapler Croc',type:'WILD',hdr:'#1a2e1a',artBg:'#f0fdf4',sk:'croc',sc:3,tilt:3,vit:2,stats:['ATK 20','DEF 10','Ink weak'],body:'<b>Wild Power Surge</b><br>2.5× ATK to one foe<br><br>Passive: every ATTACK counts as a DRAW for burst purposes<span class="flav">"heh"</span>',num:'024/073',rar:'<span class="rar-star">★</span>'}));
+cg.appendChild(mkTCG({name:'The Handball King',type:'RIVAL',hdr:'#1e3a8a',artBg:'#eff6ff',sk:'handball',tilt:-3,vit:3,stats:['ATK 18','DEF 15','Ink weak'],body:'<b>Rival Power Surge</b><br>3× ATK to one foe. yeesh.<br><br>Phase flip instead of KO<span class="flav">"yeesh"</span>',num:'008/073',rar:'<span class="rar-ultra">✦</span>'}));
+cg.appendChild(mkTCG({name:'Snake Strike',type:'SKILL',hdr:'#7c2d12',artBg:'#fff7ed',sk:'manny',sc:3,stats:['Manny only','6 MP','Burst #1'],body:'Deal 1.3× ATK to one foe. powerful.<br><br><span style="color:var(--muted);font-size:8px;">Burst #1 — triggers Manny\'s BREAK</span>',num:'037/073',rar:'<span class="rar-uncommon">✒</span>'}));
+cg.appendChild(mkTCG({name:'Chalk Wall',type:'SKETCH',hdr:'#5b21b6',artBg:'#faf5ff',icon:'🖤',charge:1,tilt:2,stats:['Buddy: Manny','Charge 1','Burst #1'],body:'<b>EFFECT</b><br>Party DEF up 50% for 2 turns<span class="flav">a thick wall of chalk</span>',num:'047/073',rar:'<span class="rar-star">★</span>'}));
+cg.appendChild(mkTCG({name:'Gold Star',type:'ITEM',hdr:'#451a03',artBg:'#fffbeb',icon:'★',iconSize:42,tilt:-2,stats:['Any unit','No cost','Burst #4'],body:'<b>EFFECT</b><br>Full HP and MP restore for 1 buddy. Revives if KO\'d.<span class="flav">"full marks."</span>',num:'057/073',rar:'<span class="rar-star">★</span>'}));
+cg.appendChild(mkTCG({name:'Late Pass',type:'EVENT',hdr:'#111827',artBg:'#e8eaf6',icon:'⏩',iconSize:30,stats:['Burst #2','Keyword: RUSH'],body:'<span class="kw kw-rush">RUSH</span><br><b>EFFECT</b><br>Your next two attacks resolve before opponent\'s next turn',num:'065/073',rar:'<span class="rar-uncommon">✒</span>'}));
+cg.appendChild(mkTCG({name:'Poison',type:'STATUS',hdr:'#111827',artBg:'#f7f8f9',icon:'☠',iconSize:32,stats:['Duration: until cured'],body:'Remove 10% of max HP at the start of each turn.<br>Cured by: Eraser, Draw The Sun',num:'062/073',rar:'—'}));
+
+// CARD LISTS
+function mkCLItem(num,name,rar,stats,effect){
+  return `<div class="cl-item"><div class="cl-num">${num}</div><div class="cl-body"><div class="cl-name">${name} <span style="float:right">${rar}</span></div><div class="cl-stats">${stats}</div><div class="cl-effect">${effect}</div></div></div>`;
+}
+document.getElementById('buddy-list').innerHTML=[
+  mkCLItem('001','FRED','<span class="rar-star">★</span>','ATK 11 · DEF 9 · MAG 5 · MP 14 · Buddy Burst #2 · Vit 23/46/70','Julbock Bash (5MP): 1.7× ATK. BREAK: Julbock Rampage — 4.2× ATK'),
+  mkCLItem('002','FLURB','<span class="rar-star">★</span>','ATK 6 · DEF 6 · MAG 12 · MP 24 · Buddy Burst #1 · Vit 18/36/55','Slime Soothe (5MP): restore HP to one buddy. BREAK: Tidal Sigh — 2.6× MAG water all foes + 25% HP to party'),
+  mkCLItem('003','DONNY','<span class="rar-star">★</span>','ATK 9 · DEF 6 · MAG 5 · MP 16 · Buddy Burst #2 · Vit 20/40/60','Quack Attack (5MP): 2 hits × 0.75× ATK; can split over two turns; Burst total 4 = Critical Hit (1.6×) instead of BREAK'),
+  mkCLItem('004','MANNY','<span class="rar-star">★</span>','ATK 12 · DEF 7 · MAG 6 · MP 16 · Buddy Burst #3 · Vit 21/43/65','Snake Strike (6MP): 1.3× ATK. BREAK: Cobra Cascade — 5.2× ATK'),
+].join('');
+
+document.getElementById('rival-list').innerHTML=[
+  mkCLItem('005','THE ODD SOCK','<span class="rar-ultra">✦</span>','ATK 14 · DEF 12 · Burst #2 · Weak: Fire · 3 Vitality Hearts','Rival Power Surge: 3× ATK to one foe. yeesh.'),
+  mkCLItem('006','THE OVERDUE','<span class="rar-ultra">✦</span>','ATK 16 · DEF 14 · Burst #2 · Weak: Fire · 3 Vitality Hearts','Rival Power Surge: 3× ATK to one foe. yeesh.'),
+  mkCLItem('007','MYSTERY MEAT','<span class="rar-ultra">✦</span>','ATK 15 · DEF 16 · Burst #2 · Weak: Fire · 3 Vitality Hearts','Rival Power Surge: 3× ATK to one foe. yeesh.'),
+  mkCLItem('008','THE HANDBALL KING','<span class="rar-ultra">✦</span>','ATK 18 · DEF 15 · Burst #3 · Weak: Ink · 3 Vitality Hearts','Rival Power Surge: 3× ATK to one foe. yeesh.'),
+  mkCLItem('009','THE DUSTER / THE GREAT WIPE','<span class="rar-ultra">✦</span>','ATK 16 · DEF 18 · Burst #2 · Weak: Ink · 3 Vitality Hearts · 2-phase','Rival Power Surge: 3× ATK to one foe. yeesh. Flips to Phase 2 instead of KO.'),
+].join('');
+
+document.getElementById('wild-list').innerHTML=[
+  mkCLItem('010','DUST BUNNY','<span class="rar-uncommon">✒</span>','ATK 12 · DEF 4 · Burst #1 · Weak: Water · 2 Vit','Passive [on entry]: opponent\'s next attack −2 damage'),
+  mkCLItem('011','ROGUE RULER','<span class="rar-common">✏</span>','ATK 15 · DEF 8 · Burst #2 · Weak: Fire · 2 Vit','Passive [on turn]: ATK up 25% when opposing buddy guards'),
+  mkCLItem('012','CHEWED GUM','<span class="rar-common">✏</span>','ATK 11 · DEF 6 · Burst #1 · Weak: Fire · 2 Vit','Passive [on hit]: target loses Sketch bonus action next turn'),
+  mkCLItem('013','BOOKWORM','<span class="rar-common">✏</span>','ATK 8 · DEF 4 · Burst #1 · Weak: Fire · 2 Vit','Passive [on event]: +1 Charge whenever any Skill Card is played by anyone'),
+  mkCLItem('014','PAPER PLANE','<span class="rar-common">✏</span>','ATK 16 · DEF 2 · Burst #3 · Weak: Water · 2 Vit','Passive [on turn]: acts first the turn it enters play'),
+  mkCLItem('015','DICTIONARY','<span class="rar-common">✏</span>','ATK 10 · DEF 8 · Burst #1 · Weak: Fire · 2 Vit','Passive [on play]: draw 1 Support Card immediately'),
+  mkCLItem('016','SAUSAGE ROLL GOBLIN','<span class="rar-common">✏</span>','ATK 14 · DEF 10 · Burst #2 · Weak: Water · 3 Vit (15/30/45)','Passive: extra vitality — 3 Vitality Hearts instead of 2'),
+  mkCLItem('017','MOULDY SANDWICH','<span class="rar-common">✏</span>','ATK 12 · DEF 5 · Burst #2 · Weak: Fire · 2 Vit','Passive [on hit]: every hit applies Poison to target'),
+  mkCLItem('018','SPORK KNIGHT','<span class="rar-uncommon">✒</span>','ATK 16 · DEF 12 · Burst #2 · Weak: Fire · 2 Vit','Passive [on entry]: can hold 1 Item Card as a permanent passive'),
+  mkCLItem('019','CRICKET BALL GOLEM','<span class="rar-uncommon">✒</span>','ATK 18 · DEF 8 · Burst #3 · Weak: Water · 2 Vit','Passive [on play]: +2 damage per Break'),
+  mkCLItem('020','ROGUE MAGPIE','<span class="rar-uncommon">✒</span>','ATK 20 · DEF 8 · Burst #3 · Weak: Ink · 2 Vit','Passive [on hit]: Rush; each hit — opponent\'s next buddy loses bonus action'),
+  mkCLItem('021','BINDII BUSH','<span class="rar-common">✏</span>','ATK 8 · DEF 6 · Burst #1 · Weak: Fire · 2 Vit','Passive [on hit]: Thorns — any buddy that attacks it receives Poison'),
+  mkCLItem('022','COFFEE GHOST','<span class="rar-uncommon">✒</span>','ATK 12 · DEF 6 · Burst #2 · Weak: Water · 2 Vit','Passive [on turn]: Haste — once per round, this player\'s next action costs no Charges'),
+  mkCLItem('023','RED PEN WRAITH','<span class="rar-uncommon">✒</span>','ATK 16 · DEF 8 · Burst #2 · Weak: Water · 2 Vit','Passive [on play]: target cannot play Skill Cards next turn'),
+  mkCLItem('024','STAPLER CROC','<span class="rar-star">★</span>','ATK 20 · DEF 10 · Burst #3 · Weak: Ink · 2 Vit','Passive [on play]: every ATTACK counts as a DRAW for burst purposes — reveal top card, add burst to damage, check burst total = 4'),
+].join('');
+
+document.getElementById('skill-list').innerHTML=[
+  mkCLItem('025','JULBOCK BASH (Fred)','<span class="rar-uncommon">✒</span>','5 MP · Burst #2','Deal 1.7× ATK to one foe'),
+  mkCLItem('026','GNOME GUARD (Fred)','<span class="rar-uncommon">✒</span>','6 MP · Burst #1','Party DEF up by 4 points each for two turns'),
+  mkCLItem('027','YULE BLAZE (Fred)','<span class="rar-uncommon">✒</span>','10 MP · Burst #3','1.6× MAG fire damage to all foes. deadly.'),
+  mkCLItem('028','TAUNT BELLOW (Fred)','<span class="rar-uncommon">✒</span>','8 MP · Burst #2','ATK down 25% on all foes. All foes have a turn delayed.'),
+  mkCLItem('029','SLIME SOOTHE (Flurb)','<span class="rar-uncommon">✒</span>','5 MP · Burst #1','Restore HP to one buddy'),
+  mkCLItem('030','SAD FACE (Flurb)','<span class="rar-uncommon">✒</span>','6 MP · Burst #1','ATK down 50% on one foe'),
+  mkCLItem('031','DEEP PRESSURE (Flurb)','<span class="rar-uncommon">✒</span>','9 MP · Burst #3','1.5× MAG water damage to all foes. deadly.'),
+  mkCLItem('032','BLOB BUBBLE (Flurb)','<span class="rar-uncommon">✒</span>','14 MP · Burst #1','Heal all buddies — complete restoration of HP'),
+  mkCLItem('033','QUACK ATTACK (Donny)','<span class="rar-uncommon">✒</span>','5 MP · Burst #2','Strike one target twice for 0.75× ATK per hit. Can split over two turns. Burst total 4 = Critical Hit (1.6× ATK)'),
+  mkCLItem('034','PUDDLE SPLASH (Donny)','<span class="rar-uncommon">✒</span>','7 MP · Burst #2','2.1× MAG water to one foe. That foe is delayed for one turn.'),
+  mkCLItem('035','FEATHER FLURRY (Donny)','<span class="rar-uncommon">✒</span>','9 MP · Burst #2','1.95× ATK wind to all foes. deadly.'),
+  mkCLItem('036','SPEED QUACK (Donny)','<span class="rar-uncommon">✒</span>','8 MP · Burst #3','Rush — Donny takes 1 extra attack before opponent\'s next turn'),
+  mkCLItem('037','SNAKE STRIKE (Manny)','<span class="rar-uncommon">✒</span>','6 MP · Burst #1','Deal 1.3× ATK to one foe. powerful.'),
+  mkCLItem('038','RALLY CRY (Manny)','<span class="rar-uncommon">✒</span>','8 MP · Burst #2','ATK up 50% on all buddies for three turns'),
+  mkCLItem('039','BURROW (Manny)','<span class="rar-uncommon">✒</span>','5 MP · Burst #1','One free Guard for all foes. +1 extra charge.'),
+  mkCLItem('040','MONGOOSE FRENZY (Manny)','<span class="rar-uncommon">✒</span>','13 MP · Burst #1','3 random hits × 1.9× ATK across all foes. simply put, whoah.'),
+].join('');
+
+document.getElementById('sketch-list').innerHTML=[
+  mkCLItem('041','SKETCH SWORD (Fred, 1C)','<span class="rar-star">★</span>','Burst #3','2.3× ATK to one foe. yep.'),
+  mkCLItem('042','DOODLE ANVIL (Fred, 2C)','<span class="rar-star">★</span>','Burst #3','3.6× ATK to one foe. Bypasses Guard.'),
+  mkCLItem('043','DRAW THE SUN (Flurb, 1C)','<span class="rar-star">★</span>','Burst #1','Heal all buddies 38% max HP + cure all ailments'),
+  mkCLItem('044','SCRIBBLE STORM (Flurb, 2C)','<span class="rar-star">★</span>','Burst #3','2.8× MAG ink damage to all foes'),
+  mkCLItem('045','SKETCHBOOK LAUNCH (Donny, 1C)','<span class="rar-star">★</span>','Burst #2','1.6× ATK to one foe'),
+  mkCLItem('046','STICK FIGURE ARMY (Donny, 2C)','<span class="rar-star">★</span>','Burst #2','4 hits × 1.1× ATK on two random foes'),
+  mkCLItem('047','CHALK WALL (Manny, 1C)','<span class="rar-star">★</span>','Burst #1','Party DEF up 50% for 2 turns'),
+  mkCLItem('048','BIG ARROW (Manny, 2C)','<span class="rar-star">★</span>','Burst #1','3× ATK on one foe. Their ATK down 25% for 3 turns.'),
+].join('');
+
+document.getElementById('item-list').innerHTML=[
+  mkCLItem('049','GLUE STICK','<span class="rar-common">✏</span>','Burst #1','Restore 45 HP to one buddy'),
+  mkCLItem('050','JUICE BOX','<span class="rar-common">✏</span>','Burst #2','Restore 30% max HP to all buddies'),
+  mkCLItem('051','STICKY TAPE','<span class="rar-uncommon">✒</span>','Burst #1','Revive 1 KO\'d buddy to one Vitality Heart'),
+  mkCLItem('052','SHARPENER','<span class="rar-common">✏</span>','Burst #2','Grant +1 Charge to 1 buddy'),
+  mkCLItem('053','RED FROG','<span class="rar-common">✏</span>','Burst #1','Restore 25 MP to 1 buddy'),
+  mkCLItem('054','ERASER','<span class="rar-common">✏</span>','Burst #1','Cure all status ailments from 1 buddy'),
+  mkCLItem('055','CHALK BOMB','<span class="rar-common">✏</span>','Burst #3','Deal 40 ink damage to all foes'),
+  mkCLItem('056','GLITTER JAR','<span class="rar-uncommon">✒</span>','Burst #1','Party Guard effect for 1 full round'),
+  mkCLItem('057','GOLD STAR','<span class="rar-star">★</span>','Burst #4 ⚡','Full HP and MP restore for 1 buddy. Revives if KO\'d. Only Burst #4 card in Set 1.'),
+].join('');
+
+document.getElementById('event-list').innerHTML=[
+  mkCLItem('064','BELL\'S CONE','<span class="rar-uncommon">✒</span>','Burst #2 · STALL','Opponent skips draw phase next turn'),
+  mkCLItem('065','LATE PASS','<span class="rar-uncommon">✒</span>','Burst #2 · RUSH','Your next two attacks resolve before opponent\'s next turn'),
+  mkCLItem('066','POP QUIZ','<span class="rar-uncommon">✒</span>','Burst #1 · DELAY','Opponent cannot play Skill Cards next turn'),
+  mkCLItem('067','PENCIL PETE\'S ADVICE','<span class="rar-star">★</span>','Burst #1','Look at top 3 cards of deck; rearrange in any order'),
+  mkCLItem('068','CLUE GUS\' DEAL','<span class="rar-star">★</span>','Burst #2 · HASTE','Discard immediately; chosen buddy earns +3 Charges'),
+  mkCLItem('069','STICKIE\'S SECRET','<span class="rar-uncommon">✒</span>','Burst #3','Reveal top card; if Burst ≥ 3, draw 2 cards instead of 1'),
+].join('');
+
+document.getElementById('status-list').innerHTML=[
+  mkCLItem('058','ATK UP','—','Duration: 3 turns · Cured by: Eraser','1.3× physical damage dealt'),
+  mkCLItem('059','ATK DOWN','—','Duration: 3 turns · Cured by: Eraser','0.7× physical damage dealt'),
+  mkCLItem('060','DEF DOWN','—','Duration: 3 turns · Cured by: Eraser','1.3× incoming physical attack. watch out!'),
+  mkCLItem('061','SLOW','—','Duration: 2 turns · Cured by: Eraser','Cannot play Sketch Cards next turn'),
+  mkCLItem('062','POISON','—','Duration: until cured · Cured by: Eraser, Draw The Sun','Remove 10% of max HP at the start of each turn'),
+  mkCLItem('063','FOCUS','—','Duration: 1 action · Expires on use','Next DRAW by this buddy automatically triggers BREAK regardless of burst total'),
+].join('');
+
+document.getElementById('secret-list').innerHTML=[
+  mkCLItem('070','SHRED FRED','<span class="rar-secret">◆</span>','Alt art · Same stats as 001','Muscular Fred variant. Holographic full-bleed art.'),
+  mkCLItem('071','FANTASTIC FLURB','<span class="rar-secret">◆</span>','Alt art · Same stats as 002','Muscular Flurb variant. Holographic full-bleed art.'),
+  mkCLItem('072','DEFINITELY DONNY','<span class="rar-secret">◆</span>','Alt art · Same stats as 003','Muscular Donny variant. Holographic full-bleed art.'),
+  mkCLItem('073','MASSIVE MANNY','<span class="rar-secret">◆</span>','Alt art · Same stats as 004','Muscular Manny variant. Holographic full-bleed art.'),
+].join('');
+
+// Nav active
+const obs=new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting){document.querySelectorAll('.top-nav a').forEach(a=>a.classList.remove('active'));const id=en.target.id;const a=document.querySelector(`.top-nav a[href="#${id}"]`);if(a)a.classList.add('active');}},{threshold:.1}));
+document.querySelectorAll('section[id]').forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
